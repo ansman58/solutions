@@ -49,13 +49,14 @@
 
 ### Using Redux,
 ---
-·  Create a Redux store to manage the global state of properties data.
+- Create a Redux store to manage the global state of properties data.
 
-·  Define the following Redux actions: 
-  - fetchPropertyDetails: Fetches the details for a specific property.
- - setPropertyDetails: Updates the store with the fetched property details.
-   
-·  Create a reducer function to handle the property details state: 
- - The initial state will be an object to hold the current property details.
- - The fetchPropertyDetails action should trigger an API call and dispatch the setPropertyDetails action with the response data.
- - The setPropertyDetails action should update the property details state.
+- Define the following Redux actions: 
+    - fetchPropertyDetails: Fetches the details for a specific property.
+    - setPropertyDetails: Updates the store with the fetched property details.
+
+- Create a reducer function to handle the property details state:
+  
+     - The initial state will be an object to hold the current property details.
+     -  The fetchPropertyDetails action should trigger an API call and dispatch the setPropertyDetails action with the response data.
+     -  The setPropertyDetails action should update the property details state.
