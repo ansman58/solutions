@@ -2,7 +2,14 @@
 Backend API Design and Security Practices in Node.js with Express:
 
 
-1. **Authentication Route**: I'd create an `/auth/login` route that accepts email and password in the request body and validate using zod.
+1. **Authentication Route**:
+- I'd create an `/auth/login` route that accepts email and password in the request body.
+- Validate the request using Zod schema
+- Implement rate limiting using express-rate-limit
+- Query the database to find the user by email
+- Compare the provided password with the hashed password stored in the database using bcrypt.compare()
+- Generate a JWT token and return it in the response
+  
 ```javascript
 import { z } from 'zod';
 import rateLimit from 'express-rate-limit';
@@ -15,11 +22,10 @@ const loginSchema = z.object({
 
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
+  max: 100,
   message: 'Too many login attempts from this IP, please try again after 15 minutes'
 });
 
-//function for response schema
 function createResponse({ status, message, data = null, error = null }) {
   return {
     status: status === "success" ? "success" : "failed",
@@ -68,6 +74,12 @@ status: "success",
 ```
 
 2. **Authorization Middleware function to protect sensitive routes.**
+- Create an authorize middleware function to protect sensitive routes
+- Extract the token from the request headers
+- Verify the token using the JWT secret
+- Fetch the user from the database based on the decoded user ID
+- Pass the user object to the next middleware function
+  
 ```javascript
 const authorize = async (req, res, next) => {
   try {
@@ -96,10 +108,9 @@ const authorize = async (req, res, next) => {
 const hashedPassword = await bcrypt.hash(password, 10);
 ```
 
-5. **PApply the `authorize` middleware to routes that require authentication.**: 
+5. **Apply the `authorize` middleware to routes that require authentication.**: 
 ```javascript
-app.get('/profile', authorize, (req, res) => {
-  res.json(req.user.profile);
+app.get('/properties', authorize, (req, res) => {
 });
 ```
 
